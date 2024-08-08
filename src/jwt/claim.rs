@@ -14,7 +14,7 @@ pub struct Claim<T> {
 
 impl<T> Claim<T> {
     pub fn from_data(data: T) -> Result<Self, TokenError> {
-        let jwt_valid_for = match std::env::var("JWT_EXPIRE_SECS") {
+        let jwt_valid_for = match std::env::var("JWT_EXPIRE_SEC") {
             Ok(x) => match x.parse() {
                 Ok(x) => x,
                 Err(_) => return Err(TokenError::JwtExpiryNotValid),

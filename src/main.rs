@@ -1,6 +1,7 @@
 use std::{fs, path::PathBuf};
 
 use clap::Parser;
+use dotenv::dotenv;
 use rocket::{
     data::{Data, ToByteUnit},
     http::uri::Absolute,
@@ -126,12 +127,16 @@ async fn login(form_data: Json<LoginForm>) -> Result<Json<Token<UserToken>>, Err
 
 #[rocket::launch]
 fn launcher() -> _ {
+    // load env
+    dotenv().ok();
+    // parse args and ensure upload dir existence
     let arg = Args::parse();
     let mut upload_dir = arg.upload;
     upload_dir.push(User::anonymous().username);
     if !upload_dir.exists() {
         let _ = fs::create_dir_all(upload_dir);
     }
+    // launch rocket
     rocket::build().mount(
         "/",
         rocket::routes![
