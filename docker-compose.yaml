@@ -1,0 +1,8 @@
+services:
+  pastebin:
+    build: .
+    restart: always
+    ports:
+      - ${PORT_PASTEBIN:-80}:80/tcp
+    env_file:
+      - ${ENV_PASTEBIN:-.env}
