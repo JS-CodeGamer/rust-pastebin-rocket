@@ -1,4 +1,4 @@
-FROM rust:alpine AS build
+FROM docker.io/library/rust:alpine AS build
 
 RUN apk add --no-cache musl-dev
 WORKDIR /app
@@ -7,7 +7,7 @@ COPY ./src /app/src
 RUN cargo build --release
 
 
-FROM alpine:latest
+FROM docker.io/library/alpine:latest
 
 COPY ./Rocket.toml .
 COPY --from=build /app/target/release/pastebin /bin/pastebin
